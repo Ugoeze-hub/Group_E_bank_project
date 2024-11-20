@@ -26,3 +26,4 @@ class Bank_functions():
         
         # Write the new data rows
         writer.writerows(registration_data)
+        
