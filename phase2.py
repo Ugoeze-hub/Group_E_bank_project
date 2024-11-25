@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect, url_for
 import os
 import csv
 import mysql.connector
@@ -67,26 +67,28 @@ class Bank_functions():
         upload_csv_to_mysql(f'Registrered {self.name} Users.csv', 'registered_users')
         
         
-    @app.route('/')
-    def home():
-        return render_template('bank_frontend.html')
+@app.route('/')
+def home():
+    return render_template('bank_frontend.html')
 
-    @app.route('/register', methods=['GET', 'POST'])
-    def register():
-        if request.method == 'POST':
-            username = request.form[uname]
-            Date_of_Birth = request.form[]
-            Phone_Number = request.form[]
-            National_Identification_Number = request.form[]
-            Email = request.form[]
-            password = request.form['password']
-            Account_Type = request.form[]
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['uname']
+        Date_of_Birth = request.form['DOB']
+        Phone_Number = request.form['Pnumber']
+        National_Identification_Number = request.form['NIN']
+        Email = request.form['email']
+        password = request.form['password']
+        Account_Type = request.form['Type_Of_Account']
 
-            
-            if username in users and users[username]['password'] == password:
-                return redirect(url_for('dashboard', username=username))
-            else:
-                return 'Login Failed! Check your credentials.'
+        bank = Bank_functions('UPAY')
+        bank.Bank_registeration(username, Date_of_Birth, Phone_Number, National_Identification_Number, Email, password, Account_Type)
 
-        return render_template('register.html')
-            
+        return redirect(url_for('home'))
+
+    return render_template('register.html')
+
+if __name__ == '__main__':
+    app.run(debug=True)
+        
