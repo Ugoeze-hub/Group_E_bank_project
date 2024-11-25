@@ -36,7 +36,7 @@ class Bank_functions():
         #     upload_csv_to_mysql(f'Registrered {self.name} Users.csv', 'registered_users')
         # except Exception as e:
         #     print(f"Error uploading data to MySQL: {e}")
-        
+
         def upload_csv_to_mysql(csv_file, table_name):
             # Read CSV file
             db_config = {
