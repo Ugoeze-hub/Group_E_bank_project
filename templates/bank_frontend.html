@@ -66,7 +66,7 @@
             color: rgb(18, 15, 40);
             border: none;
             cursor: pointer;
-            padding: 8px 20px; /* Adjust size */
+            padding: 8px 5px; /* Adjust size */
             border-radius: 5px;
         }
 
@@ -84,14 +84,14 @@
             color: white;
         }
 
-        .toggle-buttons {
+        /* .toggle-buttons {
             text-align: center;
             margin-bottom: 20px;
         }
 
         .toggle-buttons button {
             margin: 0 10px;
-        }
+        } */
     </style>
 </head>
 <body>
@@ -100,20 +100,23 @@
     </header>
     
     <main>
-        <div class="toggle-buttons">
+        <!-- <div class="toggle-buttons">
             <button onclick="showForm('signup')">Sign Up</button>
             <button onclick="showForm('login')">Login</button>
-        </div>
+        </div> -->
 
         <!-- Sign-Up Form -->
         <div id="signup" class="form-container">
             <div class="form-header">
                 <button type="button" class="btn login-btn" onclick="showForm('login')">Log In</button>
-                <button type="button" class="btn signup-btn" onclick="showForm('signup')">Register</button>
+                <button type="button" class="btn signup-btn" onclick="showForm('signup')">Sign up</button>
             </div>
             <form action="/signup" method="POST">
 
                 <h2>Sign Up</h2>
+
+                <label for="uname">Username:</label>
+                <input type="text" id="uname" name="uname" required>
                 
                 <label for="dob">Date of Birth:</label>
                 <input type="date" id="dob" name="dob" required>
@@ -134,8 +137,9 @@
                     <option value="student">Student</option>
                     <option value="normal">Normal</option>
                 </select>
-                
+
                 <button type="submit">Sign Up</button>
+                
             </form>
         </div>
 
@@ -150,7 +154,7 @@
                 <label for="login-password">Password:</label>
                 <input type="password" id="login-password" name="password" required>
                 
-                <button type="submit">Login</button>
+                <button type="submit">Log In</button>
             </form>
         </div>
     </main>
