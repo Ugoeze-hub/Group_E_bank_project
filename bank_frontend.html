@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank App - Sign Up & Login</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color:#1880E4;
+            color: black;
+            padding: 15px;
+            text-align: center;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        .form-container {
+            display: none;
+        }
+
+        .form-container.active {
+            display: block;
+        }
+
+        form {
+            margin: 20px auto;
+            max-width: 400px;
+            background: #b7b5b590;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-header {
+            display: flex;
+            justify-content: flex-end; /* Align buttons to the right */
+            gap: 10px; /* Add space between buttons */
+            margin-bottom: 10px; /* Spacing between buttons and form title */
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #1880E4;
+            color: rgb(18, 15, 40);
+            border: none;
+            cursor: pointer;
+            padding: 8px 20px; /* Adjust size */
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #4859a1;
+        }
+
+        .signup-btn {
+            background-color: #1880E4; /* Bright blue */
+            color: white;
+}
+
+        .login-btn {
+            background-color: #0077CC; /* Slightly darker blue */
+            color: white;
+        }
+
+        .toggle-buttons {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .toggle-buttons button {
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Bank App</h1>
+    </header>
+    
+    <main>
+        <div class="toggle-buttons">
+            <button onclick="showForm('signup')">Sign Up</button>
+            <button onclick="showForm('login')">Login</button>
+        </div>
+
+        <!-- Sign-Up Form -->
+        <div id="signup" class="form-container">
+            <div class="form-header">
+                <button type="button" class="btn login-btn" onclick="showForm('login')">Log In</button>
+                <button type="button" class="btn signup-btn" onclick="showForm('signup')">Register</button>
+            </div>
+            <form action="/signup" method="POST">
+
+                <h2>Sign Up</h2>
+                
+                <label for="dob">Date of Birth:</label>
+                <input type="date" id="dob" name="dob" required>
+                
+                <label for="nin">National ID Number (NIN):</label>
+                <input type="text" id="nin" name="nin" maxlength="11" required>
+                
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                
+
+                <label for="account-type">Account Type:</label>
+                <select id="account-type" name="account_type" required>
+                    <option value="" disabled selected>Select account type</option>
+                    <option value="student">Student</option>
+                    <option value="normal">Normal</option>
+                </select>
+                
+                <button type="submit">Sign Up</button>
+            </form>
+        </div>
+
+        <!-- Login Form -->
+        <div id="login" class="form-container">
+            <form action="/login" method="POST">
+                <h2>Login</h2>
+                
+                <label for="login-email">Email:</label>
+                <input type="email" id="login-email" name="email" required>
+                
+                <label for="login-password">Password:</label>
+                <input type="password" id="login-password" name="password" required>
+                
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </main>
+    
+    <footer>
+        <p>&copy; 2024 Your Bank Name</p>
+    </footer>
+
+    <script>
+        // JavaScript to toggle between forms
+        function showForm(formId) {
+            const forms = document.querySelectorAll('.form-container');
+            forms.forEach(form => form.classList.remove('active'));
+            document.getElementById(formId).classList.add('active');
+        }
+
+        // Set default form to show (e.g., Sign Up)
+        showForm('signup');
+    </script>
+</body>
+</html>
+
+
