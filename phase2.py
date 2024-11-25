@@ -66,3 +66,27 @@ class Bank_functions():
         # Upload data from CSV to MySQL
         upload_csv_to_mysql(f'Registrered {self.name} Users.csv', 'registered_users')
         
+        
+    @app.route('/')
+    def home():
+        return render_template('bank_frontend.html')
+
+    @app.route('/register', methods=['GET', 'POST'])
+    def register():
+        if request.method == 'POST':
+            username = request.form[uname]
+            Date_of_Birth = request.form[]
+            Phone_Number = request.form[]
+            National_Identification_Number = request.form[]
+            Email = request.form[]
+            password = request.form['password']
+            Account_Type = request.form[]
+
+            
+            if username in users and users[username]['password'] == password:
+                return redirect(url_for('dashboard', username=username))
+            else:
+                return 'Login Failed! Check your credentials.'
+
+        return render_template('register.html')
+            
