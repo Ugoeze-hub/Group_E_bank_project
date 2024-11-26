@@ -118,6 +118,13 @@ def main_menu():
     if request.method == 'POST':
         choice = request.form.get('choice')
         if choice == '1':
+            return redirect(url_for('Financial  Services.html'))
+        if choice == '2':
+            return redirect(url_for('Customer Care.html'))
+        if choice == '3':
+            return redirect(url_for('Other Services.html'))
+        if choice == '4':
+            return redirect(url_for('home'))
             
         
 
