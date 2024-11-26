@@ -74,7 +74,7 @@ def home():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        username = request.form['uname']
+        Username = request.form['uname']
         Date_of_Birth = request.form['DOB']
         Phone_Number = request.form['Pnumber']
         National_Identification_Number = request.form['NIN']
@@ -83,7 +83,7 @@ def register():
         Account_Type = request.form['Type_Of_Account']
 
         bank = Bank_functions('UPAY')
-        bank.Bank_registeration(username, Date_of_Birth, Phone_Number, National_Identification_Number, Email, password, Account_Type)
+        bank.Bank_registeration(Username, Date_of_Birth, Phone_Number, National_Identification_Number, Email, password, Account_Type)
 
         return redirect(url_for('home'))
 
