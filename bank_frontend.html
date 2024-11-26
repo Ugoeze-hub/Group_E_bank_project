@@ -62,7 +62,7 @@
         }
 
         button {
-            background-color: #1880E4;
+            background-color: #2880E4;
             color: rgb(18, 15, 40);
             border: none;
             cursor: pointer;
@@ -105,7 +105,8 @@
             <button onclick="showForm('login')">Login</button>
         </div> -->
 
-        <!-- Sign-Up Form -->
+        <!-- Sign-Up Form -->+
+
         <div id="signup" class="form-container">
             <div class="form-header">
                 <button type="button" class="btn login-btn" onclick="showForm('login')">Log In</button>
@@ -145,6 +146,10 @@
 
         <!-- Login Form -->
         <div id="login" class="form-container">
+            <div class="form-header">
+                <button type="button" class="btn login-btn" onclick="showForm('login')">Log In</button>
+                <button type="button" class="btn signup-btn" onclick="showForm('signup')">Sign up</button>
+            </div>
             <form action="/login" method="POST">
                 <h2>Login</h2>
                 

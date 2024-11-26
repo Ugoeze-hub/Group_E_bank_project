@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank App - Menu</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #1880E4;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+
+        main { 
+            padding: 20px;
+        }
+
+        .form-container {
+            display: none;
+        }
+
+        .form-container.active {
+            display: block;
+        }
+
+        form {
+            margin: 20px auto;
+            max-width: 400px;
+            background: #f4f4f4;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-header {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #2880E4;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 8px 5px;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #4859a1;
+        }
+
+        .menu-btn {
+            background-color: #1880E4;
+            color: white;
+        }
+
+        .signup-btn {
+            background-color: #1880E4;
+            color: white;
+        }
+
+        .login-btn {
+            background-color: #0077CC;
+            color: white;
+        }
+
+        .toggle-buttons {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .toggle-buttons button {
+            margin: 0 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome %{uname} to SPARK</h1>
+    </header>
+    
+    <main>
+        <div id="menu" class="form-container active">
+            <div class="form-header">
+                <button type="button" class="btn menu-btn" onclick="showForm('menu')">MENU</button>
+            </div>
+            <form action="/menu" method="POST">
+                <button type="submit" class="menu-btn" value="1">Financial Services</button><br>
+                <button type="submit" class="menu-btn" value="2">Customer Care</button><br>
+                <button type="submit" class="menu-btn" value="3">Other Services</button><br>
+                <button type="submit" class="menu-btn" value="4">Log out</button><br>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        function showForm(formName) {
+            // Hide all forms
+            const allForms = document.querySelectorAll('.form-container');
+            allForms.forEach(form => form.classList.remove('active'));
+
+            // Show the form based on the name
+            const activeForm = document.getElementById(formName);
+            activeForm.classList.add('active');
+        }
+    </script>
+</body>
+</html>
