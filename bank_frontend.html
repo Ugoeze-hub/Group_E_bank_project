@@ -84,6 +84,11 @@
             color: white;
         }
 
+        .home-btn {
+            background-color: #0077CC; /* Slightly darker blue */
+            color: white;
+        }
+
         /* .toggle-buttons {
             text-align: center;
             margin-bottom: 20px;
@@ -96,7 +101,14 @@
 </head>
 <body>
     <header>
-        <h1>Bank App</h1>
+        <h1>SPARK</h1>
+        <div class="nav-buttons">
+            <button type="button" class='btn home-btn' onclick="window.location.href='/'">Home</button>
+            <!-- Only redirect to login page on click -->
+            <button type="button" class="btn login-btn" onclick="window.location.href='/login'">Login</button>
+            <!-- Only redirect to sign-up page on click -->
+            <button type="button" class="btn login-btn" onclick="window.location.href='/signup'">Sign Up</button>
+        </div>
     </header>
     
     <main>
@@ -108,10 +120,10 @@
         <!-- Sign-Up Form -->+
 
         <div id="signup" class="form-container">
-            <div class="form-header">
+            <!-- <div class="form-header">
                 <button type="button" class="btn login-btn" onclick="showForm('login')">Log In</button>
                 <button type="button" class="btn signup-btn" onclick="showForm('signup')">Sign up</button>
-            </div>
+            </div> -->
             <form action="/signup" method="POST">
 
                 <h2>Sign Up</h2>
@@ -134,6 +146,9 @@
                 
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required>
+
+                <label for="pin">PIN:</label>
+                <input type="password" id="pin" name="pin" required>
                 
 
                 <label for="Type_Of_Account">Account Type:</label>

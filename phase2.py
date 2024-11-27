@@ -32,8 +32,8 @@ class Bank_functions():
             
             for _, row in data.iterrows():
                 cursor.execute(
-                    f"INSERT INTO {table_name} (Username, Date_of_Birth, Phone_Number, National_Identification_Number_(NIN), Email, Password, Account_Type) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-                    ( row['Username'], row['Date_of_Birth'], row['Phone_Number'], row['National_Identification_Number_(NIN)'], row['Email'], row['Password'], row['Account_Type'])
+                    f"INSERT INTO {table_name} (Username, Date_of_Birth, Phone_Number, National_Identification_Number_(NIN), Email, Password, Account_Type, Pin) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+                    ( row['Username'], row['Date_of_Birth'], row['Phone_Number'], row['National_Identification_Number_(NIN)'], row['Email'], row['Password'], row['Account_Type'], row['Pin'])
                 )
         except mysql.connector.Error as err:
             print(f"Error: {err}")
@@ -51,13 +51,14 @@ class Bank_functions():
         
     
 
-    def Bank_registeration(self, uname, DOB, Pnumber, NIN, email, Password, Type_Of_Account):
+    def Bank_registeration(self, uname, DOB, Pnumber, NIN, email, Password, pin, Type_Of_Account):
         hashed_password = generate_password_hash(Password)
+        hashed_pin = generate_password_hash(pin)
         registration_data = [
-            {'Username': uname, 'Date_of_Birth' : DOB, 'Phone_Number' : Pnumber, 'National_Identification_Number_(NIN)' : NIN, 'Email' : email, 'Password' : hashed_password, 'Account_Type' : Type_Of_Account}
+            {'Username': uname, 'Date_of_Birth' : DOB, 'Phone_Number' : Pnumber, 'National_Identification_Number_(NIN)' : NIN, 'Email' : email, 'Password' : hashed_password, 'Pin' : hashed_pin, 'Account_Type' : Type_Of_Account}
         ]
 
-        fieldnames = ["Username", "Date_of_Birth", "Phone_Number", "National_Identification_Number_(NIN)", "Email", "Password", "Account_Type"]
+        fieldnames = ["Username", "Date_of_Birth", "Phone_Number", "National_Identification_Number_(NIN)", "Email", "Password", 'Pin', "Account_Type"]
 
         # Check if the file exists and is empty or not
         file_exists = os.path.isfile(f'Registrered {self.name} Users.csv') and os.path.getsize(f'Registrered {self.name} Users.csv') > 0
@@ -82,8 +83,7 @@ class Bank_functions():
 
 @app.route('/')
 def home():
-    print('SPARK')
-    return render_template('bank_frontend.html')
+    return render_template('bank_homepage.html')
 
 @app.route('/signup', methods=['GET', 'POST'])
 def register():
@@ -94,12 +94,13 @@ def register():
         National_Identification_Number = request.form['NIN']
         Email = request.form['email']
         password = request.form['password']
+        pin = request.form['pin']
         Account_Type = request.form['Type_Of_Account']
 
         bank = Bank_functions('UPAY')
-        bank.Bank_registeration(Username, Date_of_Birth, Phone_Number, National_Identification_Number, Email, password, Account_Type)
+        bank.Bank_registeration(Username, Date_of_Birth, Phone_Number, National_Identification_Number, Email, password, pin, Account_Type)
 
-        return redirect(url_for('home'))
+        return redirect(url_for('main_menu'))
 
     return render_template('bank_frontend.html')
 
@@ -109,7 +110,7 @@ def login():
         Email = request.form['email']
         password = request.form['password']
 
-        return redirect(url_for('home'))
+        return redirect(url_for('main_menu'))
 
     return render_template('bank_frontend.html')
 
