@@ -104,29 +104,74 @@ def register():
 
     return render_template('bank_frontend.html')
 
+# @app.route('/login', methods=['GET', 'POST'])
+# def login():
+#     if request.method == 'POST':
+#         Email = request.form['email']
+#         password = request.form['password']
+        
+        
+
+#         return redirect(url_for('main_menu'))
+
+#     return render_template('bank_frontend.html')
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         Email = request.form['email']
         password = request.form['password']
-
-        return redirect(url_for('main_menu'))
+        
+        # Fetch the user by email (Assuming you added get_user_by_email to Bank_functions or a separate module)
+        user = Bank_functions.get_user_by_email(Email)  # Or use the db_utils function if you prefer
+        
+        if user:
+            # Compare hashed password
+            # Assuming 'user' contains a dictionary with the user data and hashed password in 'Password'
+            from werkzeug.security import check_password_hash
+            if check_password_hash(user['Password'], password):
+                return redirect(url_for('main_menu'))
+            else:
+                return render_template('bank_frontend.html', error="Invalid email or password")
+        else:
+            return render_template('bank_frontend.html', error="Invalid email or password")
 
     return render_template('bank_frontend.html')
+ 
 
 @app.route('/menu', methods=['GET', 'POST'])
 def main_menu():
     if request.method == 'POST':
         choice = request.form.get('choice')
         if choice == '1':
-            return redirect(url_for('Financial Services.html'))
+            return redirect(url_for('Financial_Services'))
         if choice == '2':
-            return redirect(url_for('Customer Care.html'))
+            return redirect(url_for('Customer_Care'))
         if choice == '3':
-            return redirect(url_for('Other Services.html'))
+            return redirect(url_for('Other_Services'))
         if choice == '4':
             return redirect(url_for('home'))
             
+    return render_template('bank_menupage.html')
+
+@app.route('/financial_services', methods=['GET', 'POST'])
+def Financial_Services():
+    if request.method == 'POST':
+        choice = request.form.get('choice')
+        if choice == '1':
+            return redirect(url_for('Transfer'))
+        if choice == '2':
+            return redirect(url_for('Deposit'))
+        if choice == '3':
+            return redirect(url_for('Balance'))
+        if choice == '4':
+            return redirect(url_for('Account details'))
+        if choice == '5':
+            return redirect(url_for('main_menu'))
+            
+    return render_template('bank_financialservices.html')
+        
         
 
 if __name__ == '__main__':

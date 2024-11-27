@@ -53,7 +53,7 @@
             font-weight: bold;
         }
 
-        input, select, button {
+        input, select {
             width: 100%;
             padding: 10px;
             margin-bottom: 15px;
@@ -62,9 +62,23 @@
         }
 
         button {
+            /* padding: 10px 15px;
+            margin: 0 10px;
+            background-color: #0a4671;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+             */
+            width: 10%;
+            padding: 10px;
+            margin: 0 10px;
+            margin-bottom: 15px;
+            border: 1px solid #1d64dd;
+            border-radius: 5px;
             background-color: #2880E4;
             color: rgb(18, 15, 40);
-            border: none;
+            /* border: none; */
             cursor: pointer;
             padding: 8px 5px; /* Adjust size */
             border-radius: 5px;
@@ -165,10 +179,10 @@
 
         <!-- Login Form -->
         <div id="login" class="form-container">
-            <div class="form-header">
+            <!-- <div class="form-header">
                 <button type="button" class="btn login-btn" onclick="showForm('login')">Log In</button>
                 <button type="button" class="btn signup-btn" onclick="showForm('signup')">Sign up</button>
-            </div>
+            </div> -->
             <form action="/login" method="POST">
                 <h2>Login</h2>
                 
