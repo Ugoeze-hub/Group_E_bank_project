@@ -104,7 +104,7 @@ def register():
     return render_template('bank_frontend.html')
 
 @app.route('/login', methods=['GET', 'POST'])
-def register():
+def login():
     if request.method == 'POST':
         Email = request.form['email']
         password = request.form['password']
@@ -118,7 +118,7 @@ def main_menu():
     if request.method == 'POST':
         choice = request.form.get('choice')
         if choice == '1':
-            return redirect(url_for('Financial  Services.html'))
+            return redirect(url_for('Financial Services.html'))
         if choice == '2':
             return redirect(url_for('Customer Care.html'))
         if choice == '3':

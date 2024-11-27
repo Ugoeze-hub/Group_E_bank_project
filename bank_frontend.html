@@ -119,11 +119,14 @@
                 <label for="uname">Username:</label>
                 <input type="text" id="uname" name="uname" required>
                 
-                <label for="dob">Date of Birth:</label>
-                <input type="date" id="dob" name="dob" required>
+                <label for="DOB">Date of Birth:</label>
+                <input type="date" id="DOB" name="DOB" required>
+
+                <label for="pnumber">Phone Number:</label>
+                <input type="number" id="pnumber" name="pnumber" maxlength='11' required>
                 
-                <label for="nin">National ID Number (NIN):</label>
-                <input type="text" id="nin" name="nin" maxlength="11" required>
+                <label for="NIN">National ID Number (NIN):</label>
+                <input type="number" id="NIN" name="NIN" maxlength="15" required>
                 
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required>
@@ -132,8 +135,8 @@
                 <input type="password" id="password" name="password" required>
                 
 
-                <label for="account-type">Account Type:</label>
-                <select id="account-type" name="account_type" required>
+                <label for="Type_Of_Account">Account Type:</label>
+                <select id="Type_Of_Account" name="Type_Of_Account" required>
                     <option value="" disabled selected>Select account type</option>
                     <option value="student">Student</option>
                     <option value="normal">Normal</option>
