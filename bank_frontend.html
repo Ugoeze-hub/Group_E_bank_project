@@ -62,15 +62,7 @@
         }
 
         button {
-            /* padding: 10px 15px;
-            margin: 0 10px;
-            background-color: #0a4671;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-             */
-            width: 10%;
+            width: 20%;
             padding: 10px;
             margin: 0 10px;
             margin-bottom: 15px;
@@ -78,10 +70,8 @@
             border-radius: 5px;
             background-color: #2880E4;
             color: rgb(18, 15, 40);
-            /* border: none; */
             cursor: pointer;
-            padding: 8px 5px; /* Adjust size */
-            border-radius: 5px;
+            padding: 8px 5px;
         }
 
         button:hover {
@@ -89,28 +79,19 @@
         }
 
         .signup-btn {
-            background-color: #1880E4; /* Bright blue */
+            background-color: #1880E4;
             color: white;
-}
+        }
 
         .login-btn {
-            background-color: #0077CC; /* Slightly darker blue */
+            background-color: #0077CC;
             color: white;
         }
 
         .home-btn {
-            background-color: #0077CC; /* Slightly darker blue */
+            background-color: #0077CC;
             color: white;
         }
-
-        /* .toggle-buttons {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .toggle-buttons button {
-            margin: 0 10px;
-        } */
     </style>
 </head>
 <body>
@@ -118,81 +99,57 @@
         <h1>SPARK</h1>
         <div class="nav-buttons">
             <button type="button" class='btn home-btn' onclick="window.location.href='/'">Home</button>
-            <!-- Only redirect to login page on click -->
-            <button type="button" class="btn login-btn" onclick="window.location.href='/login'">Login</button>
-            <!-- Only redirect to sign-up page on click -->
-            <button type="button" class="btn login-btn" onclick="window.location.href='/signup'">Sign Up</button>
+            <!-- Login and Sign Up buttons that show forms -->
+            <button type="button" class="btn login-btn" onclick="showForm('login')">Login</button>
+            <button type="button" class="btn signup-btn" onclick="showForm('signup')">Sign Up</button>
         </div>
     </header>
     
     <main>
-        <div class="toggle-buttons">
-            <button onclick="showForm('signup')">Sign Up</button>
-            <button onclick="showForm('login')">Login</button>
-        </div>
-
-        <!-- Sign-Up Form -->+
-
+        <!-- Sign-Up Form -->
         <div id="signup" class="form-container">
-            <div class="form-header">
+            <!-- <div class="form-header">
                 <button type="button" class="btn login-btn" onclick="showForm('login')">Log In</button>
                 <button type="button" class="btn signup-btn" onclick="showForm('signup')">Sign up</button>
-            </div>
+            </div> -->
             <form action="/signup" method="POST">
-
                 <h2>Sign Up</h2>
-
                 <label for="uname">Username:</label>
                 <input type="text" id="uname" name="uname" required>
-                
                 <label for="DOB">Date of Birth:</label>
                 <input type="date" id="DOB" name="DOB" required>
-
                 <label for="Pnumber">Phone Number:</label>
                 <input type="number" id="Pnumber" name="Pnumber" maxlength='11' required>
-                
                 <label for="NIN">National ID Number (NIN):</label>
                 <input type="number" id="NIN" name="NIN" maxlength="15" required>
-                
-                
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required>
-                
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required>
-
                 <label for="pin">PIN:</label>
                 <input type="password" id="pin" name="pin" required>
-                
-
                 <label for="Type_Of_Account">Account Type:</label>
                 <select id="Type_Of_Account" name="Type_Of_Account" required>
                     <option value="" disabled selected>Select account type</option>
                     <option value="student">Student</option>
                     <option value="normal">Normal</option>
                 </select>
-
                 <button type="submit">Sign Up</button>
-                
             </form>
         </div>
 
         <!-- Login Form -->
         <div id="login" class="form-container">
-            <div class="form-header">
+            <!-- <div class="form-header">
                 <button type="button" class="btn login-btn" onclick="showForm('login')">Log In</button>
                 <button type="button" class="btn signup-btn" onclick="showForm('signup')">Sign up</button>
-            </div>
-            
+            </div> -->
             <form action="/login" method="POST">
                 <h2>Login</h2>
-                
                 <label for="login-email">Email:</label>
                 <input type="email" id="login-email" name="email" required>
-                
                 <label for="login-password">Password:</label>
                 <input type="password" id="login-password" name="password" required>
-                
                 <button type="submit">Log In</button>
             </form>
         </div>
@@ -215,5 +172,3 @@
     </script>
 </body>
 </html>
-
-

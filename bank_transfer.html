@@ -1,9 +1,10 @@
+<!-- transfer.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bank App - Menu</title>
+    <title>Transfer Funds</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         body {
@@ -102,34 +103,29 @@
 </head>
 <body>
     <header>
-        <h1>FINANCIAL SERVICES</h1>
+        <h1>Transfer Funds</h1>
     </header>
-    
-    <main>
-        <div id="financialservices" class="form-container active">
-            <div class="form-header">
-                <button type="button" class="btn financialservices-btn" onclick="showForm('financial_services')">FINANCIAL SERVCES</button>
-            </div>
-            <form action="/financial_services" method="POST">
-                <button type="submit" name='choice' class="financialservices-btn" value="2">Deposit</button><br>
-                <button type="submit" name='choice' class="financialservices-btn" value="1">Transfer</button><br>
-                <button type="submit" name='choice' class="financialservices-btn" value="3">Balance</button><br>
-                <button type="submit" name='choice' class="financialservices-btn" value="4">Account Details</button><br>
-                <button type="submit" name='choice' class="financialservices-btn" value="4">Main Menu</button><br>
-            </form>
-        </div>
-    </main>
+    <form method="POST">
+        <label for="sender_pin">Your Password:</label><br>
+        <input type="number" id="sender_password" name="sender_password" required><br>
 
-    <script>
-        function showForm(formName) {
-            // Hide all forms
-            const allForms = document.querySelectorAll('.form-container');
-            allForms.forEach(form => form.classList.remove('active'));
+        <label for="recipient_account">Recipient's Account Number:</label><br>
+        <input type="text" id="recipient_account" name="recipient_account" required><br>
 
-            // Show the form based on the name
-            const activeForm = document.getElementById(formName);
-            activeForm.classList.add('active');
-        }
-    </script>
+        <label for="recipient_bank">Recipient's Bank Name:</label><br>
+        <input type="text" id="recipient_bank" name="recipient_bank" required><br>
+
+        <label for="recipient_name">Recipient's Name:</label><br>
+        <input type="text" id="recipient_name" name="recipient_name" required><br>
+
+        <button type="submit">Next</button>
+    </form>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    {% if success %}
+        <p style="color: green;">{{ success }}</p>
+    {% endif %}
 </body>
 </html>

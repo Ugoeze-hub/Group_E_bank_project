@@ -32,8 +32,8 @@ class Bank_functions():
             
             for _, row in data.iterrows():
                 cursor.execute(
-                    f"INSERT INTO {table_name} (Username, Date_of_Birth, Phone_Number, National_Identification_Number_(NIN), Email, Password, Account_Type, Pin) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
-                    ( row['Username'], row['Date_of_Birth'], row['Phone_Number'], row['National_Identification_Number_(NIN)'], row['Email'], row['Password'], row['Account_Type'], row['Pin'])
+                    f"INSERT INTO {table_name} (Username, Date_of_Birth, Phone_Number, National_Identification_Number_(NIN), Email, Password, Pin, Account_Type) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+                    ( row['Username'], row['Date_of_Birth'], row['Phone_Number'], row['National_Identification_Number_(NIN)'], row['Email'], row['Password'], row['Pin'], row['Account_Type'])
                 )
         except mysql.connector.Error as err:
             print(f"Error: {err}")
@@ -160,9 +160,9 @@ def Financial_Services():
     if request.method == 'POST':
         choice = request.form.get('choice')
         if choice == '1':
-            return redirect(url_for('Transfer'))
-        if choice == '2':
             return redirect(url_for('Deposit'))
+        if choice == '2':
+            return redirect(url_for('Transfer'))
         if choice == '3':
             return redirect(url_for('Balance'))
         if choice == '4':
@@ -171,6 +171,27 @@ def Financial_Services():
             return redirect(url_for('main_menu'))
             
     return render_template('bank_financialservices.html')
+
+@app.route('/transfer', methods=['GET', 'POST'])
+def Transfer():
+    if request.method == 'POST':
+        # Get transfer details from the form
+        sender_password = request.form['password']
+        recipient_account = request.form['recipient_account']
+        recipient_bank = request.form['recipient_bank']
+        recipient_name = request.form['recipient_name']
+        if sender_password in users:
+            return redirect(url_for('DepositPin'))
+    return render_template('bank_financialservices.html')
+    
+            
+@app.route('/transfer_pin', methods=['GET', 'POST'])
+def TransferPin():
+    if request.method == 'POST':
+        amount = request.form['amount']
+        sender_pin = request.form['pin']
+
+
         
         
 
