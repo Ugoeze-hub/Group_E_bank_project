@@ -86,7 +86,7 @@ def home():
     return render_template('bank_homepage.html')
 
 @app.route('/signup', methods=['GET', 'POST'])
-def register():
+def signup():
     if request.method == 'POST':
         Username = request.form['uname']
         Date_of_Birth = request.form['DOB']
