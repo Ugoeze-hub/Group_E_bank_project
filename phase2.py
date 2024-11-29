@@ -172,6 +172,14 @@ def Financial_Services():
             
     return render_template('bank_financialservices.html')
 
+@app.route('/deposit', methods=['GET', 'POST'])
+def Deposit():
+    if request.method == 'POST':
+        sender_password = request.form['password']
+        amount = request.form['amount']
+        sender_pin = request.form['pin']
+        
+
 @app.route('/transfer', methods=['GET', 'POST'])
 def Transfer():
     if request.method == 'POST':

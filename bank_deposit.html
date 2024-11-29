@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transfer Funds</title>
+    <title>Deposit Funds</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         body {
@@ -103,22 +103,19 @@
 </head>
 <body>
     <header>
-        <h1>Transfer Funds</h1>
+        <h1>Deposit Funds</h1>
     </header>
     <form method="POST">
-        <label for="sender_password">Your Password:</label><br>
-        <input type="number" id="sender_password" name="sender_password" required><br>
+        <label for="password">Your Password:</label><br>
+        <input type="text" id="password" name="password" required><br>
 
-        <label for="recipient_account">Recipient's Account Number:</label><br>
-        <input type="number" id="recipient_account" name="recipient_account" required><br>
+        <label for="amount">Amount:</label><br>
+        <input type="number" id="amount" name="amount" required><br>
 
-        <label for="recipient_bank">Recipient's Bank Name:</label><br>
-        <input type="text" id="recipient_bank" name="recipient_bank" required><br>
+        <label for="pin">Your PIN:</label><br>
+        <input type="number" id="pin" name="pin" required><br>
 
-        <label for="recipient_name">Recipient's Name:</label><br>
-        <input type="text" id="recipient_name" name="recipient_name" required><br>
-
-        <button type="submit">Next</button>
+        <button type="submit">Deposit</button>
     </form>
 
     {% if error %}
