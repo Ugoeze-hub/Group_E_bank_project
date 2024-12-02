@@ -5,6 +5,7 @@ import mysql.connector
 import pandas as pd
 from werkzeug.security import generate_password_hash
 
+
 app = Flask(__name__, template_folder='.')
 class Bank_functions():
     def __init__(self, name):
@@ -160,25 +161,15 @@ def Financial_Services():
     if request.method == 'POST':
         choice = request.form.get('choice')
         if choice == '1':
-            return redirect(url_for('Deposit'))
-        if choice == '2':
             return redirect(url_for('Transfer'))
-        if choice == '3':
+        if choice == '2':
             return redirect(url_for('Balance'))
-        if choice == '4':
+        if choice == '3':
             return redirect(url_for('Account details'))
-        if choice == '5':
+        if choice == '4':
             return redirect(url_for('main_menu'))
             
     return render_template('bank_financialservices.html')
-
-@app.route('/deposit', methods=['GET', 'POST'])
-def Deposit():
-    if request.method == 'POST':
-        sender_password = request.form['password']
-        amount = request.form['amount']
-        sender_pin = request.form['pin']
-        
 
 @app.route('/transfer', methods=['GET', 'POST'])
 def Transfer():

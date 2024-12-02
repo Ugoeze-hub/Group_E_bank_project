@@ -115,21 +115,21 @@
             <form action="/signup" method="POST">
                 <h2>Sign Up</h2>
                 <label for="uname">Username:</label>
-                <input type="text" id="uname" name="uname" required>
+                <input type="text" id="uname" name="User_Name" required>
                 <label for="DOB">Date of Birth:</label>
-                <input type="date" id="DOB" name="DOB" required>
+                <input type="date" id="DOB" name="Date_of_Birth" required>
                 <label for="Pnumber">Phone Number:</label>
-                <input type="number" id="Pnumber" name="Pnumber" maxlength='11' required>
+                <input type="text" id="Pnumber" name="Phone_Number" maxlength='15' required>
                 <label for="NIN">National ID Number (NIN):</label>
-                <input type="number" id="NIN" name="NIN" maxlength="15" required>
+                <input type="text" id="NIN" name="National_Identification_Number" maxlength="20" required>
                 <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
+                <input type="email" id="email" name="Email" required>
                 <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
+                <input type="password" id="password" name="Password" required>
                 <label for="pin">PIN:</label>
-                <input type="password" id="pin" name="pin" required>
+                <input type="password" id="pin" name="Pin" required>
                 <label for="Type_Of_Account">Account Type:</label>
-                <select id="Type_Of_Account" name="Type_Of_Account" required>
+                <select id="Type_Of_Account" name="Account_Type" required>
                     <option value="" disabled selected>Select account type</option>
                     <option value="student">Student</option>
                     <option value="normal">Normal</option>
@@ -147,9 +147,9 @@
             <form action="/login" method="POST">
                 <h2>Login</h2>
                 <label for="login-email">Email:</label>
-                <input type="email" id="login-email" name="email" required>
+                <input type="email" id="login-email" name="Email" required>
                 <label for="login-password">Password:</label>
-                <input type="password" id="login-password" name="password" required>
+                <input type="password" id="login-password" name="Password" required>
                 <button type="submit">Log In</button>
             </form>
         </div>
