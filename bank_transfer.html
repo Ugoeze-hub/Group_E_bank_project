@@ -105,21 +105,27 @@
     <header>
         <h1>Transfer Funds</h1>
     </header>
-    <form method="POST">
-        <label for="sender_password">Your Password:</label><br>
-        <input type="number" id="sender_password" name="sender_password" required><br>
 
-        <label for="recipient_account">Recipient's Account Number:</label><br>
-        <input type="number" id="recipient_account" name="recipient_account" required><br>
+    <main>
+        <div id="menu" class="form-container active">
+            <div class="form-header">
+                <button type="button" class="btn menu-btn" onclick="showForm('transfer')">Transfer Funds</button>
+            </div>
+            <form action="/transfer" method="POST">
+                <label for="sender_password">Your Password:</label><br>
+                <input type="text" id="sender_password" name="sender_password" required><br>
 
-        <label for="recipient_bank">Recipient's Bank Name:</label><br>
-        <input type="text" id="recipient_bank" name="recipient_bank" required><br>
+                <label for="recipient_account">Recipient's Account Number:</label><br>
+                <input type="number" id="recipient_account" name="recipient_account" required><br>
 
-        <label for="recipient_name">Recipient's Name:</label><br>
-        <input type="text" id="recipient_name" name="recipient_name" required><br>
+                <label for="recipient_bank">Recipient's Bank Name:</label><br>
+                <input type="text" id="recipient_bank" name="recipient_bank" required><br>
 
-        <button type="submit">Next</button>
-    </form>
+                <label for="recipient_name">Recipient's Name:</label><br>
+                <input type="text" id="recipient_name" name="recipient_name" required><br>
+
+                <button type="submit">Next</button>
+            </form>
 
     {% if error %}
         <p style="color: red;">{{ error }}</p>

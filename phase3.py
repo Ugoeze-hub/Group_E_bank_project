@@ -1,9 +1,10 @@
 import mysql.connector
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, session, flash, render_template, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 import csv
 
 app = Flask(__name__, template_folder='.')
+app.secret_key = 'groupE'
 
 # Helper function for establishing DB connection
 def get_db_connection():
@@ -104,7 +105,8 @@ def Login():
             conn.close()
 
             # Check if user exists and password is correct
-            if user and check_password_hash(user['Password'], password):
+            if user and check_password_hash(user['Pass_word'], password):
+                session['Email'] = email
                 return redirect(url_for('main_menu'))  # Redirect to menu page 
             else:
                 return "Incorrect email or password", 401
@@ -117,10 +119,33 @@ def Login():
     except Exception as e:
         print(f"General error: {e}")
         return f"Something went wrong: {e}", 500
-    
+    # except mysql.connector.Error as e:
+    #     flash(f"Database error: {e}", "danger")
+    #     return redirect(url_for('Login'))
+    # except Exception as e:
+    #     flash(f"Something went wrong: {e}", "danger")
+    #     return redirect(url_for('Login'))
     
 @app.route('/menu', methods=['GET', 'POST'])
 def main_menu():
+    user_email = session.get('Email')
+
+    # if not user_email:
+    #     return redirect(url_for('Login'))  # Redirect to login if the user is not logged in
+
+    # Fetch the user's details from the database
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT User_Name FROM users WHERE Email = %s", (user_email,))
+    user = cursor.fetchone()
+    cursor.close()
+    conn.close()
+
+    if user:
+        username = user['User_Name']
+    else:
+        username = "Guest"  # If no user is found, use a default value
+        
     if request.method == 'POST':
         choice = request.form.get('choice')
         if choice == '1':
@@ -132,14 +157,14 @@ def main_menu():
         if choice == '4':
             return redirect(url_for('home'))
             
-    return render_template('bank_menupage.html')
+    return render_template('bank_menupage.html', uname=username)
 
 @app.route('/financial_services', methods=['GET', 'POST'])
 def Financial_Services():
     if request.method == 'POST':
         choice = request.form.get('choice')
         if choice == '1':
-            return redirect(url_for('Transfer'))
+            return redirect(url_for('Transfer_Funds'))
         if choice == '2':
             return redirect(url_for('Balance'))
         if choice == '3':
@@ -149,5 +174,75 @@ def Financial_Services():
             
     return render_template('bank_financialservices.html')
 
+@app.route('/transfer', methods = ['GET', 'POST'])
+def Transfer_Funds():
+    if request.method == 'POST':
+        password = request.form["sender_password"]
+        recipient_account = request.form["recipient_account"]
+        recipient_bank = request.form["recipient_bank"]
+        recipient_name = request.form["recipient_name"]
+        
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM users WHERE Email = %s", (session.get('Email'),))
+        user = cursor.fetchone()
+        cursor.close()
+        conn.close()
+
+        if user and check_password_hash(user['Pass_word'], password):  # Validate password
+            # Proceed with the transfer process
+            return redirect(url_for('Transfer_Pin'))
+        else:
+            return "Invalid password", 401
+    return render_template('bank_transfer.html')
+
+@app.route('/transfer_pin', methods=['GET', 'POST'])
+def Transfer_Pin():
+    if request.method == 'POST':
+        # Get data from the form
+        sender_pin = request.form['sender_pin']
+        amount = float(request.form['amount'])
+
+        # Fetch the sender's data from the session (i.e., the logged-in user)
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+
+        cursor.execute("SELECT * FROM users WHERE Email = %s", (session.get('Email'),))
+        sender = cursor.fetchone()
+
+        if not sender:
+            return "Sender not found", 404
+
+        # Validate the sender's PIN
+        if not check_password_hash(sender['Pin'], sender_pin):
+            return "Invalid PIN", 401
+
+        # Check if the sender has enough balance
+        if sender['Balance'] < amount:
+            return "Insufficient funds", 400
+
+        # Update balances
+        new_sender_balance = sender['Balance'] - amount
+
+        cursor.execute("UPDATE users SET Balance = %s WHERE Email = %s", (new_sender_balance, session.get('Email')))
+
+        # Insert transaction into the transaction history
+        cursor.execute(
+            "INSERT INTO transactions (sender_email, amount) VALUES (%s, %s, %s)",
+            (session.get('Email'), amount)
+        )
+
+        # Commit the changes and close the connection
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        return redirect(url_for('main_menu'))  # Redirect back to the main menu
+
+    return render_template('bank_transferpin.html')
+
+        
+
+        
 if __name__ == "__main__":
     app.run(debug=True)
