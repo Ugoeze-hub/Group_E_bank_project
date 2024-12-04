@@ -163,18 +163,23 @@ def main_menu():
 def Financial_Services():
     if request.method == 'POST':
         choice = request.form.get('choice')
+        print(f"Choice received: {choice}")  # Debugging line
+
         if choice == '1':
+            print("Redirecting to Transfer_Funds")  # Debugging line
             return redirect(url_for('Transfer_Funds'))
-        if choice == '2':
+        elif choice == '2':
+            print("Redirecting to Deposit_Funds")  # Debugging line
             return redirect(url_for('Deposit_Funds'))
-        if choice == '3':
+        elif choice == '3':
             return redirect(url_for('Balance'))
-        if choice == '4':
+        elif choice == '4':
             return redirect(url_for('Account details'))
-        if choice == '5':
+        elif choice == '5':
             return redirect(url_for('main_menu'))
-            
     return render_template('bank_financialservices.html')
+
+
 
 @app.route('/transfer', methods = ['GET', 'POST'])
 def Transfer_Funds():
@@ -260,10 +265,11 @@ def Deposit_Funds():
 
         if user and check_password_hash(user['Pass_word'], password):  # Validate password
             # Proceed with the transfer process
-            return redirect(url_for('Deposit_Pin'))
+            return redirect(url_for('Deposit_pin'))
         else:
             return "Invalid password", 401
 
+    return render_template('bank_deposit.html')
         
 @app.route('/deposit_pin', methods = ['GET', 'POST'])
 def Deposit_pin():
@@ -299,6 +305,8 @@ def Deposit_pin():
             cursor.close()
             conn.close()
             return "Invalid password", 401
+        
+    return render_template('bank_depositpin.html')    
 
 
 if __name__ == "__main__":
