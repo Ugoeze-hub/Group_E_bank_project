@@ -166,10 +166,12 @@ def Financial_Services():
         if choice == '1':
             return redirect(url_for('Transfer_Funds'))
         if choice == '2':
-            return redirect(url_for('Balance'))
+            return redirect(url_for('Deposit_Funds'))
         if choice == '3':
-            return redirect(url_for('Account details'))
+            return redirect(url_for('Balance'))
         if choice == '4':
+            return redirect(url_for('Account details'))
+        if choice == '5':
             return redirect(url_for('main_menu'))
             
     return render_template('bank_financialservices.html')
@@ -228,9 +230,10 @@ def Transfer_Pin():
 
         # Insert transaction into the transaction history
         cursor.execute(
-            "INSERT INTO transactions (sender_email, amount) VALUES (%s, %s, %s)",
+            "INSERT INTO transactions (sender_email, transaction_type, amount, status) VALUES (%s, %s, %s, %s)",
             (session.get('Email'), amount)
         )
+    
 
         # Commit the changes and close the connection
         conn.commit()
@@ -242,7 +245,61 @@ def Transfer_Pin():
     return render_template('bank_transferpin.html')
 
         
+@app.route('/deposit', methods = ['GET', 'POST'])
+def Deposit_Funds():
+    if request.method == 'POST':
+        password = request.form["password"]
+        
+        
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM users WHERE Email = %s", (session.get('Email'),))
+        user = cursor.fetchone()
+        cursor.close()
+        conn.close()
+
+        if user and check_password_hash(user['Pass_word'], password):  # Validate password
+            # Proceed with the transfer process
+            return redirect(url_for('Deposit_Pin'))
+        else:
+            return "Invalid password", 401
 
         
+@app.route('/deposit_pin', methods = ['GET', 'POST'])
+def Deposit_pin():
+    if request.method == 'POST':
+        pin = request.form["pin"]
+        amount = float(request.form['amount'])
+        
+        
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM users WHERE Email = %s", (session.get('Email'),))
+        user = cursor.fetchone()
+    
+
+        if user and check_password_hash(user['Pin'], pin):  # Validate password
+            new_balance = user['Balance'] + amount
+            
+            cursor.execute("UPDATE users SET Balance = %s WHERE Email = %s", (new_balance, session.get('Email')))
+            
+            cursor.execute(
+                "INSERT INTO transactions (user_email, transaction_type, amount, status) "
+                "VALUES (%s, %s, %s, %s)",
+                (session.get('Email'), 'deposit', amount, 'success')
+            )
+            conn.commit()          
+            
+            cursor.close()
+            conn.close()
+            # Proceed with the transfer process
+            print(f'The amount of {amount} has been deposited in your account. New balance is {new_balance}')
+            return redirect(url_for('main_menu'))
+        else:
+            cursor.close()
+            conn.close()
+            return "Invalid password", 401
+
+
 if __name__ == "__main__":
     app.run(debug=True)

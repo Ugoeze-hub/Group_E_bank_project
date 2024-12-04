@@ -105,11 +105,15 @@
     <header>
         <h1>Deposit Funds</h1>
     </header>
-    <form action="/deposit" method="POST">
-        <label for="password">Your Password:</label><br>
-        <input type="text" id="password" name="password" required><br>
+    <form action="/deposit_pin" method="POST">
+        <label for="pin">Your PIN:</label><br>
+        <input type="number" id="pin" name="pin" required><br>
 
-        <button type="submit">Next</button>
+        <label for="recipient_account">Amount to Deposit:</label><br>
+        <input type="number" id="amount" name="amount" required><br>
+
+
+        <button type="submit">Deposit</button>
     </form>
 
     {% if error %}

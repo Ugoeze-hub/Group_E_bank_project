@@ -1,6 +1,6 @@
 CREATE DATABASE IF NOT EXISTS registered_users;
 
-USE registered_users;
+USE users_transaction;
 
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
