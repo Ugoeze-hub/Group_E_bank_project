@@ -2,7 +2,7 @@ import mysql.connector
 from flask import Flask, request, session, flash, render_template, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 import csv
-
+from decimal import Decimal
 app = Flask(__name__, template_folder='.')
 app.secret_key = 'groupE'
 
@@ -184,7 +184,6 @@ def Financial_Services():
 @app.route('/transfer', methods = ['GET', 'POST'])
 def Transfer_Funds():
     if request.method == 'POST':
-        password = request.form["sender_password"]
         recipient_account = request.form["recipient_account"]
         recipient_bank = request.form["recipient_bank"]
         recipient_name = request.form["recipient_name"]
@@ -196,11 +195,11 @@ def Transfer_Funds():
         cursor.close()
         conn.close()
 
-        if user and check_password_hash(user['Pass_word'], password):  # Validate password
+        if user:
             # Proceed with the transfer process
             return redirect(url_for('Transfer_Pin'))
         else:
-            return "Invalid password", 401
+            return "User not found"
     return render_template('bank_transfer.html')
 
 @app.route('/transfer_pin', methods=['GET', 'POST'])
@@ -208,7 +207,7 @@ def Transfer_Pin():
     if request.method == 'POST':
         # Get data from the form
         sender_pin = request.form['sender_pin']
-        amount = float(request.form['amount'])
+        amount = Decimal(request.form['amount'])
 
         # Fetch the sender's data from the session (i.e., the logged-in user)
         conn = get_db_connection()
@@ -235,8 +234,8 @@ def Transfer_Pin():
 
         # Insert transaction into the transaction history
         cursor.execute(
-            "INSERT INTO transactions (sender_email, transaction_type, amount, status) VALUES (%s, %s, %s, %s)",
-            (session.get('Email'), amount)
+            "INSERT INTO transactions (user_email, transaction_type, amount, status) VALUES (%s, %s, %s, %s)",
+            (session.get('Email'), 'transfer', amount, 'success')
         )
     
 
@@ -244,7 +243,8 @@ def Transfer_Pin():
         conn.commit()
         cursor.close()
         conn.close()
-
+        
+        print(f'The amount of {amount} has been transfered to your account. New balance is {new_sender_balance}')
         return redirect(url_for('main_menu'))  # Redirect back to the main menu
 
     return render_template('bank_transferpin.html')
@@ -275,7 +275,7 @@ def Deposit_Funds():
 def Deposit_pin():
     if request.method == 'POST':
         pin = request.form["pin"]
-        amount = float(request.form['amount'])
+        amount = Decimal(request.form['amount'])
         
         
         conn = get_db_connection()
@@ -284,7 +284,18 @@ def Deposit_pin():
         user = cursor.fetchone()
     
 
-        if user and check_password_hash(user['Pin'], pin):  # Validate password
+        if user and check_password_hash(user['Pin'], pin): # Validate password
+            cursor.execute("SHOW COLUMNS FROM users LIKE 'Balance'")
+            balance_column = cursor.fetchone()
+
+            # If 'Balance' column doesn't exist, add it
+            if not balance_column:
+                cursor.execute("ALTER TABLE users ADD COLUMN Balance DECIMAL(10, 2) DEFAULT 0.00")
+                conn.commit()  
+                
+                cursor.execute("SELECT * FROM users WHERE Email = %s", (session.get('Email'),))
+                user = cursor.fetchone()
+            
             new_balance = user['Balance'] + amount
             
             cursor.execute("UPDATE users SET Balance = %s WHERE Email = %s", (new_balance, session.get('Email')))
@@ -294,6 +305,7 @@ def Deposit_pin():
                 "VALUES (%s, %s, %s, %s)",
                 (session.get('Email'), 'deposit', amount, 'success')
             )
+            
             conn.commit()          
             
             cursor.close()

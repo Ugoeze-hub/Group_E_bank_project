@@ -1,15 +1,13 @@
 CREATE DATABASE IF NOT EXISTS registered_users;
 
-USE users_transaction;
+USE registered_users;
 
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE transactions (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    User_Name VARCHAR(255),
-    Date_of_Birth DATE,
-    Phone_Number VARCHAR(15),  
-    National_Identification_Number VARCHAR(20), 
-    Email VARCHAR(255) UNIQUE,
-    Pass_word VARCHAR(255), 
-    Pin VARCHAR(255),  
-    Account_Type VARCHAR(50)  
+    User_email VARCHAR(255) NOT NULL,
+    Transaction_type VARCHAR(50) NOT NULL,
+    Amount DECIMAL(10, 2) NOT NULL,
+    Status_ VARCHAR(50) NOT NULL,
+    Transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_email) REFERENCES users(Email) ON DELETE CASCADE
 );
