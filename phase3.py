@@ -188,6 +188,11 @@ def Transfer_Funds():
         recipient_bank = request.form["recipient_bank"]
         recipient_name = request.form["recipient_name"]
         
+        # Store recipient details in the session
+        session['recipient_account'] = recipient_account
+        session['recipient_bank'] = recipient_bank
+        session['recipient_name'] = recipient_name
+
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
         cursor.execute("SELECT * FROM users WHERE Email = %s", (session.get('Email'),))
@@ -195,11 +200,8 @@ def Transfer_Funds():
         cursor.close()
         conn.close()
 
-        if user:
-            # Proceed with the transfer process
-            return redirect(url_for('Transfer_Pin'))
-        else:
-            return "User not found"
+        return redirect(url_for('Transfer_Pin'))
+        
     return render_template('bank_transfer.html')
 
 @app.route('/transfer_pin', methods=['GET', 'POST'])
@@ -226,6 +228,11 @@ def Transfer_Pin():
         # Check if the sender has enough balance
         if sender['Balance'] < amount:
             return "Insufficient funds", 400
+        
+        # # Fetch recipient data from session
+        # recipient_account = session.get('recipient_account')
+        # recipient_bank = session.get('recipient_bank')
+        # recipient_name = session.get('recipient_name')
 
         # Update balances
         new_sender_balance = sender['Balance'] - amount
@@ -244,7 +251,7 @@ def Transfer_Pin():
         cursor.close()
         conn.close()
         
-        print(f'The amount of {amount} has been transfered to your account. New balance is {new_sender_balance}')
+        # print(f'The amount of {amount} has been transfered to your account. New balance is {new_sender_balance}')
         return redirect(url_for('main_menu'))  # Redirect back to the main menu
 
     return render_template('bank_transferpin.html')
