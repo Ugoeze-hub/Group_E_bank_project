@@ -5,42 +5,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transaction History</title>
     <style>
+        body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+
         th, td {
-            padding: 10px;
-            border: 1px solid #ddd;
-            text-align: center;
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
         }
+
         th {
-            background-color: #f4f4f4;
+            background-color: #5692ec; /* bluee header */
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1; /* Light grey on hover */
+        }
+
+        td {
+            color: #333;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #5692ec; /* Link color */
+        }
+
+        a:hover {
+            text-decoration: underline; /* Underline on hover */
         }
     </style>
 </head>
 <body>
-    <h1>Transaction History</h1>
-    <table>
-        
+    <h1>Your Transaction History</h1>
+    <table border="1">
         <thead>
             <tr>
-                <th>Sender</th>
-                <th>Recipient</th>
+                <th>Transaction ID</th>
+                <th>Transaction Type</th>
                 <th>Amount</th>
+                <th>Status</th>
                 <th>Date</th>
             </tr>
-        </thead>
-        <tbody>
+        </thead> 
+        <tbody>   
             {% for transaction in transactions %}
             <tr>
-                <td>{{ transaction.sender_email }}</td>
-                <td>{{ transaction.recipient_email }}</td>
+                <td>{{ transaction.id }}</td>
+                <td>{{ transaction.transaction_type }}</td>
                 <td>{{ transaction.amount }}</td>
-                <td>{{ transaction.transfer_date }}</td>
+                <td>{{ transaction.Status_ }}</td>
+                <td>{{ transaction.date }}</td> <!-- Assuming you have a date column -->
             </tr>
-            {% endfor %}
+            {% endfor %}          
         </tbody>
     </table>
+    <a href="{{ url_for('main_menu') }}">Back to Menu</a>
 </body>
 </html>

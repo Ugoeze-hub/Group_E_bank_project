@@ -42,6 +42,7 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
 
         .nav-buttons button:hover {
@@ -54,10 +55,38 @@
             padding: 50px 20px;
         }
 
-        .welcome-text {
-            font-size: 24px;
-            color: #333;
+        .hero {
+            background-color: #e9ecef;
+            padding: 40px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             margin-bottom: 30px;
+        }
+
+        .hero h2 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .hero button {
+            padding: 12px 20px;
+            background-color: #1880E4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .hero button:hover {
+            background-color: #005fa3;
         }
 
         footer {
@@ -68,6 +97,26 @@
             position: fixed;
             width: 100%;
             bottom: 0;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 600px) {
+            .nav-buttons button {
+                width: 100%;
+                margin: 5px 0;
+            }
+
+            .hero {
+                padding: 20px;
+            }
+
+            .hero h2 {
+                font-size: 24px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
         }
     </style>
 </head>

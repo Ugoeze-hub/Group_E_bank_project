@@ -174,7 +174,7 @@ def Financial_Services():
         elif choice == '3':
             return redirect(url_for('Balance'))
         elif choice == '4':
-            return redirect(url_for('Account details'))
+            return redirect(url_for('Transaction_History'))
         elif choice == '5':
             return redirect(url_for('main_menu'))
     return render_template('bank_financialservices.html')
@@ -241,7 +241,7 @@ def Transfer_Pin():
 
         # Insert transaction into the transaction history
         cursor.execute(
-            "INSERT INTO transactions (user_email, transaction_type, amount, status) VALUES (%s, %s, %s, %s)",
+            "INSERT INTO transactions (user_email, transaction_type, amount, Status_) VALUES (%s, %s, %s, %s)",
             (session.get('Email'), 'transfer', amount, 'success')
         )
     
@@ -251,7 +251,7 @@ def Transfer_Pin():
         cursor.close()
         conn.close()
         
-        # print(f'The amount of {amount} has been transfered to your account. New balance is {new_sender_balance}')
+        print(f'The amount of {amount} has been transfered to your account. New balance is {new_sender_balance}')
         return redirect(url_for('main_menu'))  # Redirect back to the main menu
 
     return render_template('bank_transferpin.html')
@@ -308,7 +308,7 @@ def Deposit_pin():
             cursor.execute("UPDATE users SET Balance = %s WHERE Email = %s", (new_balance, session.get('Email')))
             
             cursor.execute(
-                "INSERT INTO transactions (user_email, transaction_type, amount, status) "
+                "INSERT INTO transactions (user_email, transaction_type, amount, Status_) "
                 "VALUES (%s, %s, %s, %s)",
                 (session.get('Email'), 'deposit', amount, 'success')
             )
@@ -327,6 +327,26 @@ def Deposit_pin():
         
     return render_template('bank_depositpin.html')    
 
+
+        
+@app.route('/transaction_history', methods=['GET'])
+def transaction_History():
+    user_email = session.get('Email')
+    
+    if not user_email:
+        return redirect(url_for('Login'))  # Redirect to login if the user is not logged in
+
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    
+    # Fetch transaction history for the logged-in user
+    cursor.execute("SELECT * FROM transactions WHERE user_email = %s", (user_email,))
+    transactions = cursor.fetchall()
+    
+    cursor.close()
+    conn.close()
+
+    return render_template('transaction_history.html', transactions=transactions)
 
 if __name__ == "__main__":
     app.run(debug=True)
