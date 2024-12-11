@@ -58,7 +58,7 @@
     </style>
 </head>
 <body>
-    <h1>Your Transaction History</h1>
+    <h1>{{username }}'s Transaction History</h1>
     <table border="1">
         <thead>
             <tr>
@@ -73,10 +73,10 @@
             {% for transaction in transactions %}
             <tr>
                 <td>{{ transaction.id }}</td>
-                <td>{{ transaction.transaction_type }}</td>
-                <td>{{ transaction.amount }}</td>
+                <td>{{ transaction.Transaction_type }}</td>
+                <td>{{ transaction.Amount }}</td>
                 <td>{{ transaction.Status_ }}</td>
-                <td>{{ transaction.date }}</td> <!-- Assuming you have a date column -->
+                <td>{{ transaction.Transaction_date }}</td> <!-- Assuming you have a date column -->
             </tr>
             {% endfor %}          
         </tbody>

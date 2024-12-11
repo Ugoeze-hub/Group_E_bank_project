@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ username }}'s Bank Balance</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .container {
+            width: 60%;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .balance-card {
+            background-color: #5692ec;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .balance-card h2 {
+            margin: 0;
+            font-size: 2em;
+        }
+
+        .balance-card p {
+            font-size: 1.2em;
+        }
+
+        .balance-card .amount {
+            font-weight: bold;
+            font-size: 1.5em;
+        }
+
+        .back-btn {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+            background-color: #5692ec;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            width: 200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .back-btn:hover {
+            background-color: #4577c1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Welcome, {{ username }}!</h1>
+
+        <div class="balance-card">
+            <h2>Your Current Balance</h2>
+            {% if balance %}
+                <p class="amount">{{ "{:.2f}".format(balance['Balance']) }}</p>
+            {% else %}
+                <p class="amount">Balance not available</p>
+            {% endif %}
+        </div>
+
+        <a href="{{ url_for('main_menu') }}" class="back-btn">Back to Menu</a>
+    </div>
+
+</body>
+</html>

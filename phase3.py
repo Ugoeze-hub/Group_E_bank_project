@@ -157,7 +157,7 @@ def main_menu():
         if choice == '4':
             return redirect(url_for('home'))
             
-    return render_template('bank_menupage.html', uname=username)
+    return render_template('bank_menupage.html', username=username)
 
 @app.route('/financial_services', methods=['GET', 'POST'])
 def Financial_Services():
@@ -174,7 +174,7 @@ def Financial_Services():
         elif choice == '3':
             return redirect(url_for('Balance'))
         elif choice == '4':
-            return redirect(url_for('Transaction_History'))
+            return redirect(url_for('transaction_History'))
         elif choice == '5':
             return redirect(url_for('main_menu'))
     return render_template('bank_financialservices.html')
@@ -327,7 +327,33 @@ def Deposit_pin():
         
     return render_template('bank_depositpin.html')    
 
+@app.route('/balance', methods=['GET'])
+def Balance():
+    user_email = session.get('Email')
+    
+    if not user_email:
+        return redirect(url_for('Login'))  # Redirect to login if the user is not logged in
 
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    
+    # Fetch the user's name using their email
+    cursor.execute("SELECT User_Name FROM users WHERE Email = %s", (user_email,))
+    user = cursor.fetchone()
+
+    if user:
+        username = user['User_Name']
+    else:
+        username = "Guest"  # Default name in case something goes wrong
+ 
+    # Fetch transaction history for the logged-in user
+    cursor.execute("SELECT Balance FROM users WHERE Email = %s", (user_email,))
+    balance = cursor.fetchone()
+    
+    cursor.close()
+    conn.close()
+    
+    return render_template('bank_userbalance.html', balance=balance, username=username)
         
 @app.route('/transaction_history', methods=['GET'])
 def transaction_History():
@@ -339,14 +365,25 @@ def transaction_History():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
     
+    # Fetch the user's name using their email
+    cursor.execute("SELECT User_Name FROM users WHERE Email = %s", (user_email,))
+    user = cursor.fetchone()
+
+    if user:
+        username = user['User_Name']
+    else:
+        username = "Guest"  # Default name in case something goes wrong
+
+    
     # Fetch transaction history for the logged-in user
     cursor.execute("SELECT * FROM transactions WHERE user_email = %s", (user_email,))
     transactions = cursor.fetchall()
+    print(transactions) 
     
     cursor.close()
     conn.close()
 
-    return render_template('transaction_history.html', transactions=transactions)
+    return render_template('bank_transactionhistory.html', transactions=transactions, username=username)
 
 if __name__ == "__main__":
     app.run(debug=True)

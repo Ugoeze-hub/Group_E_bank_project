@@ -13,3 +13,11 @@ CREATE TABLE IF NOT EXISTS users (
     Pin VARCHAR(255),  
     Account_Type VARCHAR(50)  
 );
+
+to reset your table index
+
+SET @new_id = 0;
+
+UPDATE your_table
+SET id = (@new_id := @new_id + 1)
+ORDER BY id;
