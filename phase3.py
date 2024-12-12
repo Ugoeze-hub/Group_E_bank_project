@@ -385,5 +385,27 @@ def transaction_History():
 
     return render_template('bank_transactionhistory.html', transactions=transactions, username=username)
 
+@app.route('/other_services', methods=['GET', 'POST'])
+def Other_Services():
+    if request.method == 'POST':
+        choice = request.form.get('choice')
+        print(f"Choice received: {choice}")  # Debugging line
+
+        if choice == '1':
+            return redirect(url_for('Data'))
+        elif choice == '2':
+            return redirect(url_for('Airtime'))
+        elif choice == '3':
+            return redirect(url_for('Bills'))
+        elif choice == '4':
+            return redirect(url_for('main_menu'))
+    return render_template('bank_otherservices.html')
+
+@app.route('/data', methods=['GET', 'POST'])
+def Data():
+    if request.method == 'POST':
+        
+
+
 if __name__ == "__main__":
     app.run(debug=True)
