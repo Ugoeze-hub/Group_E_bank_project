@@ -99,12 +99,42 @@
             margin: 0 10px;
         }
 
+         /* Flash message styles */
+         .flash-message {
+            padding: 10px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .flash-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .flash-error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
     </style>
 </head>
 <body>
     <header>
         <h1>Transfer Pin</h1>
     </header>
+
+    <!-- Display Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash-message {% if category == 'success' %}flash-success{% else %}flash-error{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+
     <form action="/transfer_pin" method="POST">
         <label for="recipient_account">Amount to transfer:</label><br>
         <input type="number" id="amount" name="amount" required><br>

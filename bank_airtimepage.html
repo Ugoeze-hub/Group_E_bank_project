@@ -1,10 +1,9 @@
-<!-- transfer.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deposit Funds</title>
+    <title>Airtime Purchase</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         body {
@@ -99,8 +98,8 @@
             margin: 0 10px;
         }
 
-         /* Flash message styles */
-         .flash-message {
+        /* Flash message styles */
+        .flash-message {
             padding: 10px;
             margin: 15px 0;
             border-radius: 5px;
@@ -120,7 +119,7 @@
 </head>
 <body>
     <header>
-        <h1>Deposit Funds</h1>
+        <h1>Airtime Purchase</h1>
     </header>
 
     <!-- Display Flash Messages -->
@@ -134,23 +133,23 @@
         {% endif %}
     {% endwith %}
 
-    
-    <form action="/deposit_pin" method="POST">
-        <label for="pin">Your PIN:</label><br>
-        <input type="number" id="pin" name="pin" required><br>
+    <form action="/data" method="POST">
+        <label for="user_pin">Your PIN:</label><br>
+        <input type="number" id="user_pin" name="user_pin" required><br>
 
-        <label for="recipient_account">Amount to Deposit:</label><br>
-        <input type="number" id="amount" name="amount" required><br>
+        <label for="airtime_amount">Amount to buy:</label><br>
+        <input type="number" id="airtime_amount" name="airtime_amount" required><br>
 
+        <label for="services">Select The Service:</label>
+        <select id="services" name="services" required>
+            <option value="" disabled selected>Select Service</option>
+            <option value="mtn">MTN</option>
+            <option value="glo">GLO</option>
+            <option value="9mobil">9MOBILE</option>
+            <option value="airtel">AIRTEL</option>
+        </select>
 
-        <button type="submit">Deposit</button>
+        <button type="submit">Make Purchase For Airtime</button>
     </form>
-
-    {% if error %}
-        <p style="color: red;">{{ error }}</p>
-    {% endif %}
-    {% if success %}
-        <p style="color: green;">{{ success }}</p>
-    {% endif %}
 </body>
 </html>

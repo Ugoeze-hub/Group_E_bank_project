@@ -228,11 +228,6 @@ def Transfer_Pin():
         # Check if the sender has enough balance
         if sender['Balance'] < amount:
             return "Insufficient funds", 400
-        
-        # # Fetch recipient data from session
-        # recipient_account = session.get('recipient_account')
-        # recipient_bank = session.get('recipient_bank')
-        # recipient_name = session.get('recipient_name')
 
         # Update balances
         new_sender_balance = sender['Balance'] - amount
@@ -251,7 +246,7 @@ def Transfer_Pin():
         cursor.close()
         conn.close()
         
-        print(f'The amount of {amount} has been transfered to your account. New balance is {new_sender_balance}')
+        flash(f'The amount of {amount} has been transfered to your account. New balance is {new_sender_balance}')
         return redirect(url_for('main_menu'))  # Redirect back to the main menu
 
     return render_template('bank_transferpin.html')
@@ -318,7 +313,7 @@ def Deposit_pin():
             cursor.close()
             conn.close()
             # Proceed with the transfer process
-            print(f'The amount of {amount} has been deposited in your account. New balance is {new_balance}')
+            flash(f'The amount of {amount} has been deposited in your account. New balance is {new_balance}')
             return redirect(url_for('main_menu'))
         else:
             cursor.close()
@@ -404,7 +399,100 @@ def Other_Services():
 @app.route('/data', methods=['GET', 'POST'])
 def Data():
     if request.method == 'POST':
+        # Get data from the form
+        user_pin = request.form.get('user_pin')
+        data_amount = Decimal(request.form.get('data_amount'))
+        services = request.form.get('services')
+
+        # Fetch the sender's data from the session (i.e., the logged-in user)
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+
+        cursor.execute("SELECT * FROM users WHERE Email = %s", (session.get('Email'),))
+        user = cursor.fetchone()
+
+        if not user:
+            return "Sender not found", 404
+
+        # Validate the sender's PIN
+        if not check_password_hash(user['Pin'], user_pin):
+            return "Invalid PIN", 401
+
+        # Check if the sender has enough balance
+        if user['Balance'] < data_amount:
+            return "Insufficient funds", 400
+
+        # Update balances
+        new_balance = user['Balance'] - data_amount
         
+        cursor.execute("UPDATE users SET Balance = %s WHERE Email = %s", (new_balance, session.get('Email')))
+        
+        cursor.execute(
+            "INSERT INTO transactions (user_email, transaction_type, amount, Status_) VALUES (%s, %s, %s, %s)",
+            (session.get('Email'), 'data', data_amount, 'success')
+        )
+    
+
+        # Commit the changes and close the connection
+        conn.commit()
+        cursor.close()
+        conn.close()
+        
+        flash(f'The amount of {data_amount} for data has been purchased. New balance is {new_balance}')
+        return redirect(url_for('main_menu'))  # Redirect back to the main menu
+
+    return render_template('bank_datapage.html')
+
+
+    
+@app.route('/airtime', methods=['GET', 'POST'])
+def Airtime():
+    if request.method == 'POST':
+        # Get data from the form
+        user_pin = request.form.get('user_pin')
+        airtime_amount = Decimal(request.form.get('airtime_amount'))
+        services = request.form.get('services')
+
+        # Fetch the sender's data from the session (i.e., the logged-in user)
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+
+        cursor.execute("SELECT * FROM users WHERE Email = %s", (session.get('Email'),))
+        user = cursor.fetchone()
+
+        if not user:
+            return "Sender not found", 404
+
+        # Validate the sender's PIN
+        if not check_password_hash(user['Pin'], user_pin):
+            return "Invalid PIN", 401
+
+        # Check if the sender has enough balance
+        if user['Balance'] < airtime_amount:
+            return "Insufficient funds", 400
+
+        # Update balances
+        new_balance = user['Balance'] - airtime_amount
+        
+        cursor.execute("UPDATE users SET Balance = %s WHERE Email = %s", (new_balance, session.get('Email')))
+        
+        cursor.execute(
+            "INSERT INTO transactions (user_email, transaction_type, amount, Status_) VALUES (%s, %s, %s, %s)",
+            (session.get('Email'), 'airtime', airtime_amount, 'success')
+        )
+    
+
+        # Commit the changes and close the connection
+        conn.commit()
+        cursor.close()
+        conn.close()
+        
+        flash(f'The amount of {airtime_amount} for data has been purchased. New balance is {new_balance}')
+        return redirect(url_for('main_menu'))  # Redirect back to the main menu
+
+    return render_template('bank_airtimepage.html')
+
+  
 
 
 if __name__ == "__main__":
