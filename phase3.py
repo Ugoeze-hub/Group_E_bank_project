@@ -390,9 +390,9 @@ def Other_Services():
             return redirect(url_for('Data'))
         elif choice == '2':
             return redirect(url_for('Airtime'))
+        # elif choice == '3':
+        #     return redirect(url_for('Bills'))
         elif choice == '3':
-            return redirect(url_for('Bills'))
-        elif choice == '4':
             return redirect(url_for('main_menu'))
     return render_template('bank_otherservices.html')
 
@@ -450,8 +450,18 @@ def Airtime():
     if request.method == 'POST':
         # Get data from the form
         user_pin = request.form.get('user_pin')
-        airtime_amount = Decimal(request.form.get('airtime_amount'))
+        airtime_amount_str = request.form.get('airtime_amount')  # Get airtime amount as string
         services = request.form.get('services')
+
+        # Check if the airtime amount is provided
+        if not airtime_amount_str:
+            return "Airtime amount is required", 400  # Return error if missing
+
+        try:
+            airtime_amount = Decimal(airtime_amount_str)  # Convert to Decimal
+        except Exception:
+            return "Invalid airtime amount", 400  # Return error if invalid decimal
+
 
         # Fetch the sender's data from the session (i.e., the logged-in user)
         conn = get_db_connection()
@@ -492,8 +502,43 @@ def Airtime():
 
     return render_template('bank_airtimepage.html')
 
-  
+
+@app.route('/customer_care', methods=['GET', 'POST'])
+def customer_care():
+    if request.method == 'POST':
+        # Get form data
+        _Name = request.form.get('_Name')
+        email = request.form.get('email')
+        phone = request.form.get('phone')
+        _Address = request.form.get('_Address')
+        inquiry = request.form.get('inquiry')
+
+        # For now, we will just print the data (you can store it in a database or send an email)
+        print(f"Name: {_Name}")
+        print(f"Email: {email}")
+        print(f"Phone: {phone}")
+        print(f"Address: {_Address}")
+        print(f"Inquiry: {inquiry}")
+        
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "INSERT INTO inquiries (_Name, email, phone, _Address, inquiry) "
+            "VALUES (%s, %s, %s, %s, %s)", 
+            (_Name, email, phone, _Address, inquiry))
+
+        conn.commit()  # Save the changes to the database
+        conn.close()  # Close the database connection
 
 
-if __name__ == "__main__":
+        # Flash a success message
+        flash("Your inquiry has been submitted successfully!", "success")
+
+        # Redirect to prevent re-posting form data
+        return redirect(url_for('main_menu'))
+
+    return render_template('bank_customercare.html')  # The HTML template (customer_care.html)
+
+if __name__ == '__main__':
     app.run(debug=True)

@@ -1,0 +1,9 @@
+CREATE TABLE inquiries (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    _Name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    _Address TEXT NOT NULL,
+    inquiry TEXT NOT NULL,
+    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
