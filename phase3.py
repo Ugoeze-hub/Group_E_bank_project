@@ -504,7 +504,7 @@ def Airtime():
 
 
 @app.route('/customer_care', methods=['GET', 'POST'])
-def customer_care():
+def Customer_Care():
     if request.method == 'POST':
         # Get form data
         _Name = request.form.get('_Name')
